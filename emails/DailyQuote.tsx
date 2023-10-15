@@ -11,12 +11,15 @@ import {
 } from "@react-email/components";
 import { User } from "@prisma/client";
 
-type Quote = {
-  content: String;
-  author: String;
-};
+interface DailyQuoteProps {
+  user: User;
+  quoteData: {
+    content: String;
+    author: String;
+  };
+}
 
-export const DailyQuote = (user: User, quoteData: Quote) => (
+export const DailyQuote = ({ user, quoteData }: DailyQuoteProps) => (
   <Html>
     <Head />
     <Body style={main}>

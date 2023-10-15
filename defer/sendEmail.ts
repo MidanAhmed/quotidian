@@ -16,10 +16,10 @@ async function sendEmail(user: User, quoteData: Quote) {
       from: "quotidian@email.com",
       to: user.email,
       subject: "Daily Quote",
-      react: DailyQuote(user, quoteData),
+      react: DailyQuote({ user: user, quoteData: quoteData }),
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 }
 
