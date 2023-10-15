@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 import { DailyQuote } from "@/emails/DailyQuote";
 import { User } from "@prisma/client";
+import { defer } from "@defer/client";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -18,4 +19,4 @@ async function sendEmail(user: User, quoteData: Quote) {
   });
 }
 
-export default sendEmail;
+export default defer(sendEmail);
