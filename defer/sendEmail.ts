@@ -11,12 +11,16 @@ type Quote = {
 };
 
 async function sendEmail(user: User, quoteData: Quote) {
-  await resend.emails.send({
-    from: "quotidian@email.com",
-    to: user.email,
-    subject: "Daily Quote",
-    react: DailyQuote(user, quoteData),
-  });
+  try {
+    await resend.emails.send({
+      from: "quotidian@email.com",
+      to: user.email,
+      subject: "Daily Quote",
+      react: DailyQuote(user, quoteData),
+    });
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 export default defer(sendEmail);
