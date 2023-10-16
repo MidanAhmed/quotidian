@@ -15,12 +15,12 @@ const dataFetcher = async () => {
         isSub: true,
       },
     });
-    
+
     console.log(users, data);
 
     users.forEach(async (user) => {
       await resend.emails.send({
-        from: "quotidian@email.com",
+        from: "ahmedmidan8@gmail.com",
         to: user.email,
         subject: "Daily Quote",
         react: DailyQuote({ user: user, quoteData: data[0] }),
