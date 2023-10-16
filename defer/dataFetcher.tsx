@@ -24,7 +24,13 @@ const dataFetcher = async () => {
         from: "quotidian@email.com",
         to: user.email,
         subject: "Daily Quote",
-        react: DailyQuote({ user, quoteData: data[0] }),
+        react: (
+          <DailyQuote
+            firstName={user.firstName || ""}
+            content={data[0].content}
+            author={data[0].author}
+          />
+        ),
       });
     });
   } catch (err) {

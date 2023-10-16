@@ -9,28 +9,24 @@ import {
   Hr,
   Heading,
 } from "@react-email/components";
-import { User } from "@prisma/client";
 
 interface DailyQuoteProps {
-  user: User;
-  quoteData: {
-    content: String;
-    author: String;
-  };
+  firstName: String;
+  content: String;
+  author: String;
 }
 
-export function DailyQuote({ user, quoteData }: DailyQuoteProps) {
+export function DailyQuote(props: DailyQuoteProps) {
+  const { firstName, content, author } = props;
   return (
     <Html>
       <Head />
       <Body style={main}>
         <Container style={container}>
           <Text>
-            <Heading style={h1}>Hello, {user.firstName}</Heading>
+            <Heading style={h1}>Hello, {firstName}</Heading>
           </Text>
-          <Text style={{ ...text, marginBottom: "14px" }}>
-            {quoteData.content}
-          </Text>
+          <Text style={{ ...text, marginBottom: "14px" }}>{content}</Text>
           <Text
             style={{
               ...text,
@@ -39,7 +35,7 @@ export function DailyQuote({ user, quoteData }: DailyQuoteProps) {
               marginBottom: "16px",
             }}
           >
-            -- {quoteData.author}
+            -- {author}
           </Text>
           <Hr />
           <Text style={footer}>
