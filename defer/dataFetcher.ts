@@ -2,7 +2,7 @@ import { db } from "@/db";
 import { defer } from "@defer/client";
 import axios from "axios";
 import { Resend } from "resend";
-import DailyQuote from "@/emails/DailyQuote";
+import { DailyQuote } from "@/emails/DailyQuote";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -19,11 +19,11 @@ const dataFetcher = async () => {
     console.log(users, data);
 
     users.forEach(async (user) => {
-      await resend.emails.send({
-        from: "ahmedmidan8@gmail.com",
+      await resend.sendEmail({
+        from: "quotidian@email.com",
         to: user.email,
         subject: "Daily Quote",
-        react: DailyQuote({ user: user, quoteData: data[0] }),
+        react: DailyQuote({ user, quoteData: data[0] }),
       });
     });
   } catch (err) {

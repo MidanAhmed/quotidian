@@ -19,38 +19,40 @@ interface DailyQuoteProps {
   };
 }
 
-const DailyQuote = ({ user, quoteData }: DailyQuoteProps) => (
-  <Html>
-    <Head />
-    <Body style={main}>
-      <Container style={container}>
-        <Text>
-          <Heading style={h1}>Hello, {user.firstName}</Heading>
-        </Text>
-        <Text style={{ ...text, marginBottom: "14px" }}>
-          {quoteData.content}
-        </Text>
-        <Text
-          style={{
-            ...text,
-            color: "#ababab",
-            marginTop: "14px",
-            marginBottom: "16px",
-          }}
-        >
-          -- {quoteData.author}
-        </Text>
-        <Hr />
-        <Text style={footer}>
-          <Link href="" target="_blank" style={{ ...link, color: "#898989" }}>
-            quotidian
-          </Link>
-          , daily quotes
-        </Text>
-      </Container>
-    </Body>
-  </Html>
-);
+export function DailyQuote({ user, quoteData }: DailyQuoteProps) {
+  return (
+    <Html>
+      <Head />
+      <Body style={main}>
+        <Container style={container}>
+          <Text>
+            <Heading style={h1}>Hello, {user.firstName}</Heading>
+          </Text>
+          <Text style={{ ...text, marginBottom: "14px" }}>
+            {quoteData.content}
+          </Text>
+          <Text
+            style={{
+              ...text,
+              color: "#ababab",
+              marginTop: "14px",
+              marginBottom: "16px",
+            }}
+          >
+            -- {quoteData.author}
+          </Text>
+          <Hr />
+          <Text style={footer}>
+            <Link href="" target="_blank" style={{ ...link, color: "#898989" }}>
+              quotidian
+            </Link>
+            , daily quotes
+          </Text>
+        </Container>
+      </Body>
+    </Html>
+  );
+}
 
 export default DailyQuote;
 
