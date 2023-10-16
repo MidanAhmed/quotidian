@@ -10,7 +10,8 @@ type Quote = {
   author: String;
 };
 
-async function sendEmail(user: User, quoteData: Quote) {
+const sendEmail = async (user: User, quoteData: Quote) => {
+  console.log(user, quoteData);
   try {
     await resend.emails.send({
       from: "quotidian@email.com",
@@ -21,6 +22,6 @@ async function sendEmail(user: User, quoteData: Quote) {
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 export default defer(sendEmail);
