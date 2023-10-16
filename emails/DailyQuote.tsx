@@ -19,7 +19,7 @@ interface DailyQuoteProps {
   };
 }
 
-export const DailyQuote = ({ user, quoteData }: DailyQuoteProps) => (
+const DailyQuote = ({ user, quoteData }: DailyQuoteProps) => (
   <Html>
     <Head />
     <Body style={main}>
