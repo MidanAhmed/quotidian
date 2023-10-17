@@ -8,7 +8,7 @@ export default function Home() {
           Fuel your day with a daily drip of Quote!
         </h1>
         <p className="tracking-tight mt-6 max-w-xl text-base sm:text-lg text-muted-foreground">
-          Discover daily inspiration with quotidian, where you'll receive a
+          Discover daily inspiration with quotidian, where you&apos;ll receive a
           fresh and uplifting quote everyday delivered to your email at
           preferred time.
         </p>

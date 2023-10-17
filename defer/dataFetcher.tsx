@@ -22,7 +22,7 @@ const dataFetcher = async () => {
       console.log(user);
       await resend.sendEmail({
         from: "quotidian@email.com",
-        to: user.email,
+        to: [user.email],
         subject: "Daily Quote",
         react: (
           <DailyQuote
