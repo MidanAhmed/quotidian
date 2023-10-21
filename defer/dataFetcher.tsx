@@ -1,11 +1,9 @@
 import { db } from "@/db";
 import { defer } from "@defer/client";
 import axios from "axios";
-import { Resend } from "resend";
 import DailyQuote from "@/emails/DailyQuote";
 import { currentUTCHour } from "@/lib/dayjs";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { render } from "@react-email/components";
 
 const dataFetcher = async () => {
   try {
@@ -24,15 +22,23 @@ const dataFetcher = async () => {
 
     users.forEach(async (user) => {
       console.log(user.email, currHour);
-      await resend.emails.send({
-        from: "onboarding@resend.dev",
+      const emaildata = {
+        from: "Quotidian <onboarding@resend.dev>",
         to: user.email,
         subject: "Daily Quote",
-        react: DailyQuote({
-          firstName: user.firstName || "",
-          content: data[0].content,
-          author: data[0].author,
-        }),
+        html: render(
+          DailyQuote({
+            firstName: user.firstName || "",
+            content: data[0].content,
+            author: data[0].author,
+          }),
+          {
+            pretty: true,
+          }
+        ),
+      };
+      axios.post("https://api.resend.com/email", emaildata, {
+        headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
       });
     });
   } catch (err) {
@@ -40,4 +46,4 @@ const dataFetcher = async () => {
   }
 };
 
-export default defer.cron(dataFetcher, "2 * * * *");
+export default defer.cron(dataFetcher, "2 */4 * * *");
