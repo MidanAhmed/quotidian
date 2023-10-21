@@ -14,7 +14,8 @@ model User {
   lastName       String?  @map("last_name")
   email          String   @unique
   displayPicture String?  @map("display_picture")
-  timestamp      DateTime @db.Timestamptz(0)
+  prefTimestamp  DateTime @map("pref_timestamp") @db.Timestamptz()
+  prefHour       Int      @map("pref_hour")
   isSub          Boolean  @default(false) @map("is_sub")
 
   @@map("users")

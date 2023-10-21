@@ -2,6 +2,7 @@ import { db } from "@/db";
 import axios from "axios";
 import { Resend } from "resend";
 import { DailyQuote } from "@/emails/DailyQuote";
+import { currentUTCHour, currentUTCTimestamp } from "@/lib/dayjs";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -9,9 +10,15 @@ export async function POST() {
   try {
     const { data } = await axios.get("https://api.quotable.io/quotes/random");
 
+    let currHour = currentUTCHour();
+
     const users = await db.user.findMany({
       where: {
         isSub: true,
+        prefHour: {
+          gte: currHour,
+          lt: currHour + 1,
+        },
       },
     });
 
@@ -28,7 +35,7 @@ export async function POST() {
         }),
       });
     });
-    return Response.json(data[0]);
+    return Response.json(users);
   } catch (err) {
     console.log(err);
   }
