@@ -23,7 +23,7 @@ const dataFetcher = async () => {
     });
 
     users.forEach(async (user) => {
-      console.log(user.email);
+      console.log(user.email, currHour);
       await resend.emails.send({
         from: "onboarding@resend.dev",
         to: user.email,
