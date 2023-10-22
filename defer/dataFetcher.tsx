@@ -7,13 +7,16 @@ import { render } from "@react-email/components";
 
 const dataFetcher = async () => {
   try {
+    const currhour = currentUTCHour();
+    console.log(currhour);
+    
     const { data } = await axios.get("https://api.quotable.io/quotes/random");
 
     const users = await db.user.findMany({
       where: {
         isSub: true,
         prefHour: {
-          equals: currentUTCHour(),
+          equals: currhour,
         },
       },
     });
@@ -37,7 +40,7 @@ const dataFetcher = async () => {
       const res = await axios.post("https://api.resend.com/email", emaildata, {
         headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
       });
-      console.log(user.email, currentUTCTimestamp(), res.data.id);
+      console.log(user.email, res.data.id);
     });
   } catch (err) {
     console.log(err);
