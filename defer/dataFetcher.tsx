@@ -46,4 +46,4 @@ const dataFetcher = async () => {
   }
 };
 
-export default defer.cron(dataFetcher, "2 */4 * * *");
+export default defer.cron(dataFetcher, "0 * * * *");
