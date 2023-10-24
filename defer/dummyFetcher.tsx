@@ -2,13 +2,10 @@ import { db } from "@/db";
 import { defer } from "@defer/client";
 import axios from "axios";
 import { currentUTCHour } from "@/lib/dayjs";
-import { Resend } from "resend";
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// const headers = {
-//   "Content-Type": "application/json",
-//   Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-// };
+const headers = {
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+};
 
 const dummyFetcher = async () => {
   try {
@@ -32,8 +29,12 @@ const dummyFetcher = async () => {
         subject: "Daily Quote",
         text: `Hello ${user.firstName}`,
       };
-      const res = await resend.emails.send(emaildata);
-      console.log(user.email, res.id);
+      const res = await axios.post(
+        "https://api.resend.com/email",
+        JSON.stringify(emaildata),
+        { headers: headers }
+      );
+      console.log(user.email, res.data);
     });
   } catch (err) {
     console.log(err);

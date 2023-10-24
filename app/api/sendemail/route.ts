@@ -8,6 +8,10 @@ import dataFetcher from "@/defer/dataFetcher";
 import { NextResponse } from "next/server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const headers = {
+  // "Content-Type": "application/json",
+  Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+};
 
 export async function GET() {
   try {
@@ -18,9 +22,9 @@ export async function GET() {
       text: `Hello user`,
     };
     const res = await axios.post("https://api.resend.com/email", emaildata, {
-      headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
+      headers,
     });
-    return NextResponse.json({ result: "ok", id: res.data.id });
+    return NextResponse.json({ ...res.data });
   } catch (err) {
     console.log(err);
   }
