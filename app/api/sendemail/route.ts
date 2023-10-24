@@ -20,7 +20,6 @@ export async function GET() {
     const res = await axios.post("https://api.resend.com/email", emaildata, {
       headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
     });
-    console.log(emaildata.to, res.data.id);
     return NextResponse.json({ result: "ok", id: res.data.id });
   } catch (err) {
     console.log(err);
