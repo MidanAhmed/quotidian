@@ -11,8 +11,17 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function GET() {
   try {
-    await dataFetcher();
-    return NextResponse.json({ result: "ok" });
+    const emaildata = {
+      from: "onboarding@resend.dev",
+      to: "ahmedmidan8@gmail.com",
+      subject: "Daily Quote",
+      text: `Hello user`,
+    };
+    const res = await axios.post("https://api.resend.com/email", emaildata, {
+      headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
+    });
+    console.log(emaildata.to, res.data.id);
+    return NextResponse.json({ result: "ok", id: res.data.id });
   } catch (err) {
     console.log(err);
   }

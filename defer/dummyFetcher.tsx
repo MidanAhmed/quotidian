@@ -16,6 +16,7 @@ const dummyFetcher = async () => {
         },
       },
     });
+    console.log(users);
 
     users.forEach(async (user) => {
       const emaildata = {
