@@ -2,14 +2,18 @@ import { db } from "@/db";
 import { defer } from "@defer/client";
 import axios from "axios";
 import DailyQuote from "@/emails/DailyQuote";
-import { currentUTCHour, currentUTCTimestamp } from "@/lib/dayjs";
+import { currentUTCHour } from "@/lib/dayjs";
 import { render } from "@react-email/components";
+const headers = {
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+};
 
 const dataFetcher = async () => {
   try {
     const currhour = currentUTCHour();
     console.log(currhour);
-    
+
     const { data } = await axios.get("https://api.quotable.io/quotes/random");
 
     const users = await db.user.findMany({
@@ -21,7 +25,7 @@ const dataFetcher = async () => {
       },
     });
 
-    users.forEach(async (user) => {
+    for (const user of users) {
       const emaildata = {
         from: "Quotidian <onboarding@resend.dev>",
         to: user.email,
@@ -38,10 +42,10 @@ const dataFetcher = async () => {
         ),
       };
       const res = await axios.post("https://api.resend.com/email", emaildata, {
-        headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
+        headers: headers,
       });
       console.log(user.email, res.data.id);
-    });
+    }
   } catch (err) {
     console.log(err);
   }
