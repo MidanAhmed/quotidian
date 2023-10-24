@@ -25,7 +25,7 @@ const dataFetcher = async () => {
       },
     });
 
-    for (const user of users) {
+    for await (const user of users) {
       const emaildata = {
         from: "Quotidian <onboarding@resend.dev>",
         to: user.email,
@@ -41,9 +41,11 @@ const dataFetcher = async () => {
           }
         ),
       };
-      const res = await axios.post("https://api.resend.com/email", emaildata, {
-        headers: headers,
-      });
+      const res = await axios.post(
+        "https://api.resend.com/email",
+        JSON.stringify(emaildata),
+        { headers: headers }
+      );
       console.log(user.email, res.data.id);
     }
   } catch (err) {
