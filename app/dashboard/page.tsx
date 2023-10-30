@@ -1,14 +1,37 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import Dashboard from "@/components/Dashboard";
+import { initialTimeSetter, utcToLocalHour } from "@/lib/dayjs";
+import { createUser, getUserDataById, isUserAvailable } from "@/lib/data";
 
-const Page = () => {
+const Page = async () => {
   const { getUser } = getKindeServerSession();
   const user = getUser();
 
-  if (!user || !user.id) redirect("/auth-callback?origin=dashboard");
+  if (!user.id || !user.email) redirect("/");
 
-  return <Dashboard />;
+  const userSynced = await isUserAvailable(user.id);
+
+  if (!userSynced) {
+    const { timestamp, hour } = initialTimeSetter();
+    let data = {
+      id: user.id,
+      email: user.email,
+      firstName: user.given_name,
+      lastName: user.family_name,
+      displayPicture: user.picture,
+      prefHour: hour,
+      prefTimestamp: timestamp,
+    };
+    await createUser(data);
+  }
+
+  const dbUser = await getUserDataById(user.id);
+  if (!dbUser) redirect("/");
+
+  dbUser.prefHour = utcToLocalHour(dbUser.prefTimestamp);
+
+  return <Dashboard user={dbUser} />;
 };
 
 export default Page;

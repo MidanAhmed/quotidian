@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import prisma from "@/lib/prisma";
 import { defer } from "@defer/client";
 import axios from "axios";
 import DailyQuote from "@/emails/DailyQuote";
@@ -16,7 +16,7 @@ const dataFetcher = async () => {
 
     const { data } = await axios.get("https://api.quotable.io/quotes/random");
 
-    const users = await db.user.findMany({
+    const users = await prisma.user.findMany({
       where: {
         isSub: true,
         prefHour: {
@@ -41,11 +41,9 @@ const dataFetcher = async () => {
           }
         ),
       };
-      const res = await axios.post(
-        "https://api.resend.com/email",
-        JSON.stringify(emaildata),
-        { headers: headers }
-      );
+      const res = await axios.post("https://api.resend.com/email", emaildata, {
+        headers: headers,
+      });
       console.log(user.email, res.data.id);
     }
   } catch (err) {
