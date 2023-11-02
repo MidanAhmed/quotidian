@@ -9,15 +9,17 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EmailPreferences } from "./EmailPreferences";
+import EmailPreferences from "./EmailPreferences";
 import { User } from "@prisma/client";
-import { FC } from "react";
+import { FC, Suspense } from "react";
+import AccountDetails from "./AccountDetails";
+import AccountDetailsSkeleton from "./AccountDetailsSkeleton";
 
-interface UserProps {
-  user: User;
+interface UserId {
+  id: string;
 }
 
-const Dashboard: FC<UserProps> = ({ user }) => {
+const Dashboard: FC<UserId> = ({ id }: UserId) => {
   return (
     <MaxWidthWrapper classname="my-12 space-y-6 max-w-3xl">
       <h1 className="text-3xl font-extrabold tracking-tight lg:text-4xl text-center">
@@ -28,22 +30,16 @@ const Dashboard: FC<UserProps> = ({ user }) => {
           <CardTitle>Account Details</CardTitle>
           <CardDescription>View your account details.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-2">
-          <div className="flex items-center justify-between space-x-4">
-            <div className="flex items-center space-x-3">WORK IN PROGRESS</div>
-            <div className="flex items-center space-x-3">{user.email}</div>
-            <div className="flex items-center space-x-3">{user.firstName}</div>
-          </div>
-        </CardContent>
+        <Suspense fallback={<AccountDetailsSkeleton />}>
+          <AccountDetails id={id} />
+        </Suspense>
       </Card>
       <Card className="mx-auto">
         <CardHeader>
           <CardTitle>Email Preferences</CardTitle>
           <CardDescription>Customize your email preferences.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-2">
-          <div>{user.prefHour}</div>
-        </CardContent>
+        <EmailPreferences id={id} />
       </Card>
     </MaxWidthWrapper>
   );

@@ -2,7 +2,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import Dashboard from "@/components/Dashboard";
 import { initialTimeSetter, utcToLocalHour } from "@/lib/dayjs";
-import { createUser, getUserDataById, isUserAvailable } from "@/lib/data";
+import { createUser, isUserAvailable } from "@/lib/data";
 
 const Page = async () => {
   const { getUser } = getKindeServerSession();
@@ -26,12 +26,9 @@ const Page = async () => {
     await createUser(data);
   }
 
-  const dbUser = await getUserDataById(user.id);
-  if (!dbUser) redirect("/");
+  // dbUser.prefHour = utcToLocalHour(dbUser.prefTimestamp);
 
-  dbUser.prefHour = utcToLocalHour(dbUser.prefTimestamp);
-
-  return <Dashboard user={dbUser} />;
+  return <Dashboard id={user.id} />;
 };
 
 export default Page;

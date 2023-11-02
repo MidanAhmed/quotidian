@@ -1,0 +1,121 @@
+"use client";
+
+import Link from "next/link";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
+import axios from "axios";
+import { initialTimeSetter } from "@/lib/dayjs";
+import { FormEvent } from "react";
+import { useRouter } from "next/navigation";
+
+const EmailPrefSchema = z.object({
+  // prefTimestamp: z.string().datetime(),
+  isSub: z.boolean(),
+  prefHour: z.coerce
+    .number()
+    .gte(0, { message: "Enter a number between 0 and 23" })
+    .lte(23, { message: "Enter a number between 0 and 23" }),
+});
+
+export type FormData = z.infer<typeof EmailPrefSchema>;
+
+// This can come from your database or API.
+
+export function EmailForm(EmailProps: Partial<FormData>) {
+  const router = useRouter();
+
+  const defaultValues: Partial<FormData> = {
+    isSub: EmailProps.isSub,
+    prefHour: EmailProps.prefHour,
+    // prefTimestamp: EmailProps.prefTimestamp,
+  };
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(EmailPrefSchema),
+    defaultValues,
+  });
+
+  async function onSubmit(data: FormData) {
+    const { timestamp, hour } = initialTimeSetter(data.prefHour);
+
+    const response = await fetch("/api/updateprefs", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        isSub: data.isSub,
+        prefHour: hour,
+        prefTimestamp: timestamp,
+      }),
+    });
+
+    router.refresh();
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="isSub"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                <div className="space-y-0.5">
+                  <FormLabel className="text-md">Daily Quote</FormLabel>
+                  <FormDescription>
+                    Receive daily quotes from Quotidian.
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="prefHour"
+            render={({ field }) => (
+              <FormItem className="rounded-lg border p-4">
+                <FormLabel className="text-base">
+                  Enter Preferred Hour
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter a number"
+                    className="w-50"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Enter an Hour you want to recieve the Daily Quote email.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <Button type="submit">Save Preferences</Button>
+      </form>
+    </Form>
+  );
+}

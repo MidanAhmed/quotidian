@@ -1,4 +1,5 @@
 import prisma from "./prisma";
+import { EmailFormValues } from "@/components/EmailForm";
 
 interface createUserParams {
   id: string;
@@ -10,14 +11,56 @@ interface createUserParams {
   prefTimestamp: string;
 }
 
-export async function getUserDataById(id: string) {
+export async function fetchAccountInfoById(id: string) {
   try {
     const user = await prisma.user.findUniqueOrThrow({
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        displayPicture: true,
+      },
       where: {
         id: id,
       },
     });
     return user;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function fetchEmailInfoById(id: string) {
+  try {
+    const user = await prisma.user.findUniqueOrThrow({
+      select: {
+        id: true,
+        isSub: true,
+        prefHour: true,
+        prefTimestamp: true,
+      },
+      where: {
+        id: id,
+      },
+    });
+    return user;
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export async function updateEmailInfoById(
+  id: string,
+  data: { prefTimestamp: Date; prefHour: number; isSub: boolean }
+) {
+  try {
+    await prisma.user.update({
+      data: data,
+      where: {
+        id: id,
+      },
+    });
   } catch (err) {
     console.error(err);
   }
