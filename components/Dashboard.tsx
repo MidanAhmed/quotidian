@@ -1,19 +1,15 @@
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { User2 } from "lucide-react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
-  CardContent,
 } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import EmailPreferences from "./EmailPreferences";
-import { User } from "@prisma/client";
 import { FC, Suspense } from "react";
 import AccountDetails from "./AccountDetails";
 import AccountDetailsSkeleton from "./AccountDetailsSkeleton";
+import EmailPreferencesSkeleton from "./EmailPreferencesSkeleton";
 
 interface UserId {
   id: string;
@@ -39,7 +35,9 @@ const Dashboard: FC<UserId> = ({ id }: UserId) => {
           <CardTitle>Email Preferences</CardTitle>
           <CardDescription>Customize your email preferences.</CardDescription>
         </CardHeader>
-        <EmailPreferences id={id} />
+        <Suspense fallback={<EmailPreferencesSkeleton />}>
+          <EmailPreferences id={id} />
+        </Suspense>
       </Card>
     </MaxWidthWrapper>
   );

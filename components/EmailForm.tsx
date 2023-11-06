@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -17,10 +16,10 @@ import {
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
-import axios from "axios";
 import { initialTimeSetter } from "@/lib/dayjs";
-import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
+import React from "react";
 
 const EmailPrefSchema = z.object({
   // prefTimestamp: z.string().datetime(),
@@ -38,6 +37,8 @@ export type FormData = z.infer<typeof EmailPrefSchema>;
 export function EmailForm(EmailProps: Partial<FormData>) {
   const router = useRouter();
 
+  const [isSaving, setIsSaving] = React.useState<boolean>(false);
+
   const defaultValues: Partial<FormData> = {
     isSub: EmailProps.isSub,
     prefHour: EmailProps.prefHour,
@@ -50,6 +51,8 @@ export function EmailForm(EmailProps: Partial<FormData>) {
   });
 
   async function onSubmit(data: FormData) {
+    setIsSaving(true);
+
     const { timestamp, hour } = initialTimeSetter(data.prefHour);
 
     const response = await fetch("/api/updateprefs", {
@@ -63,6 +66,8 @@ export function EmailForm(EmailProps: Partial<FormData>) {
         prefTimestamp: timestamp,
       }),
     });
+
+    setIsSaving(false);
 
     router.refresh();
   }
@@ -102,7 +107,7 @@ export function EmailForm(EmailProps: Partial<FormData>) {
                 <FormControl>
                   <Input
                     placeholder="Enter a number"
-                    className="w-50"
+                    className="w-1/3"
                     {...field}
                   />
                 </FormControl>
@@ -114,7 +119,10 @@ export function EmailForm(EmailProps: Partial<FormData>) {
             )}
           />
         </div>
-        <Button type="submit">Save Preferences</Button>
+        <Button type="submit" disabled={isSaving}>
+          {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <span>Save Preferences</span>
+        </Button>
       </form>
     </Form>
   );

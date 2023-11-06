@@ -1,7 +1,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import Dashboard from "@/components/Dashboard";
-import { initialTimeSetter, utcToLocalHour } from "@/lib/dayjs";
+import { initialTimeSetter } from "@/lib/dayjs";
 import { createUser, isUserAvailable } from "@/lib/data";
 
 const Page = async () => {

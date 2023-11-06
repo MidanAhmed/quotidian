@@ -8,11 +8,11 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 const Navbar = () => {
   const { isAuthenticated } = getKindeServerSession();
   return (
-    <nav className="sticky top-0 h-14 bg-background">
+    <nav className="sticky top-0 h-14 bg-background z-40">
       <MaxWidthWrapper>
         <div className="flex justify-between items-center h-14 py-2 border-b text-xl font-bold">
           <Link href="/" className="tracking-tight">
-            quotidian.
+            Quotidian.
           </Link>
           <div className="flex justify-between items-center gap-2">
             {isAuthenticated() ? (

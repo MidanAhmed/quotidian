@@ -12,7 +12,7 @@ const AccountDetails: FC<UserId> = async ({ id }: UserId) => {
   const user = await fetchAccountInfoById(id);
   return (
     <CardContent className="space-y-2">
-      <div className="flex items-center space-x-4">
+      <div className="space-y-4 md:flex md:items-center md:space-x-4 md:space-y-0">
         <Avatar>
           <AvatarImage src={user?.displayPicture || ""} />
           <AvatarFallback>

@@ -1,5 +1,4 @@
 import prisma from "./prisma";
-import { EmailFormValues } from "@/components/EmailForm";
 
 interface createUserParams {
   id: string;
