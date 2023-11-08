@@ -20,9 +20,9 @@ import { initialTimeSetter } from "@/lib/dayjs";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import React from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 const EmailPrefSchema = z.object({
-  // prefTimestamp: z.string().datetime(),
   isSub: z.boolean(),
   prefHour: z.coerce
     .number()
@@ -42,7 +42,6 @@ export function EmailForm(EmailProps: Partial<FormData>) {
   const defaultValues: Partial<FormData> = {
     isSub: EmailProps.isSub,
     prefHour: EmailProps.prefHour,
-    // prefTimestamp: EmailProps.prefTimestamp,
   };
 
   const form = useForm<FormData>({
@@ -51,6 +50,8 @@ export function EmailForm(EmailProps: Partial<FormData>) {
   });
 
   async function onSubmit(data: FormData) {
+    const { toast } = useToast();
+    
     setIsSaving(true);
 
     const { timestamp, hour } = initialTimeSetter(data.prefHour);
@@ -68,6 +69,18 @@ export function EmailForm(EmailProps: Partial<FormData>) {
     });
 
     setIsSaving(false);
+
+    if (!response?.ok) {
+      return toast({
+        title: "Something went wrong.",
+        description: "Your settings was not updated. Please try again.",
+        variant: "destructive",
+      });
+    }
+
+    toast({
+      description: "Your settings has been updated.",
+    });
 
     router.refresh();
   }

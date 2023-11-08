@@ -18,8 +18,3 @@ export function initialTimeSetter(t = 8) {
 export function utcToLocalHour(timestamp: Date) {
   return dayjs(timestamp).local().hour();
 }
-
-// {
-//     "time": "2023-10-21T10:57:31.309Z",
-//     "hour": 16
-// }

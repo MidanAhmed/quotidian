@@ -26,8 +26,6 @@ const Page = async () => {
     await createUser(data);
   }
 
-  // dbUser.prefHour = utcToLocalHour(dbUser.prefTimestamp);
-
   return <Dashboard id={user.id} />;
 };
 

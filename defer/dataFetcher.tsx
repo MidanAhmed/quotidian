@@ -27,7 +27,7 @@ const dataFetcher = async () => {
 
     for await (const user of users) {
       const emaildata = {
-        from: "Quotidian <onboarding@resend.dev>",
+        from: "Quotidian <daily@quotidian.cloud>",
         to: user.email,
         subject: "Daily Quote",
         html: render(
