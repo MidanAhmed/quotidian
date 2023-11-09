@@ -36,6 +36,7 @@ export type FormData = z.infer<typeof EmailPrefSchema>;
 
 export function EmailForm(EmailProps: Partial<FormData>) {
   const router = useRouter();
+  const { toast } = useToast();
 
   const [isSaving, setIsSaving] = React.useState<boolean>(false);
 
@@ -50,8 +51,6 @@ export function EmailForm(EmailProps: Partial<FormData>) {
   });
 
   async function onSubmit(data: FormData) {
-    const { toast } = useToast();
-    
     setIsSaving(true);
 
     const { timestamp, hour } = initialTimeSetter(data.prefHour);
@@ -125,7 +124,11 @@ export function EmailForm(EmailProps: Partial<FormData>) {
                   />
                 </FormControl>
                 <FormDescription>
-                  Enter an Hour you want to recieve the Daily Quote email.
+                  Enter an Hour you want to recieve the Daily Quote email.{" "}
+                  <b>
+                    The exactness of the Daily email is not guaranteed due to
+                    differences in timezone.
+                  </b>
                 </FormDescription>
                 <FormMessage />
               </FormItem>

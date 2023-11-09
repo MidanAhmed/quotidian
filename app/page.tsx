@@ -25,9 +25,9 @@ export default function Home() {
 
       <MaxWidthWrapper classname="my-32 max-w-3xl">
         <blockquote className="border-l-4 pl-4 italic">
-          "When you meet someone better than yourself, turn your thoughts to
-          becoming his equal. When you meet someone not as good as you are, look
-          within and examine your own self."
+          &quot;When you meet someone better than yourself, turn your thoughts
+          to becoming his equal. When you meet someone not as good as you are,
+          look within and examine your own self.&quot;
         </blockquote>
         <footer className="mt-4 text-right">-- Confucius</footer>
       </MaxWidthWrapper>

@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Quotidian",
-  url: "",
-  ogImage: "",
+  url: "https://quotidian.cloud",
+  ogImage: "https://quotidian.cloud/og.jpg",
   description:
     "Get a quote directly delivered to your email at your preferred time.",
   links: {
