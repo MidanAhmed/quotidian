@@ -1,7 +1,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import Dashboard from "@/components/Dashboard";
-import { initialTimeSetter } from "@/lib/dayjs";
+import { timeSetter } from "@/lib/dayjs";
 import { createUser, isUserAvailable } from "@/lib/data";
 
 const Page = async () => {
@@ -13,7 +13,7 @@ const Page = async () => {
   const userSynced = await isUserAvailable(user.id);
 
   if (!userSynced) {
-    const { timestamp, hour } = initialTimeSetter();
+    const { timestamp, hour } = timeSetter();
     let data = {
       id: user.id,
       email: user.email,

@@ -16,13 +16,14 @@ import {
 } from "@/components/ui/form";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
-import { initialTimeSetter } from "@/lib/dayjs";
+import { timeSetter, utcToLocalHour } from "@/lib/dayjs";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import React from "react";
 import { useToast } from "@/components/ui/use-toast";
 
 const EmailPrefSchema = z.object({
+  prefTimestamp: z.string(),
   isSub: z.boolean(),
   prefHour: z.coerce
     .number()
@@ -42,7 +43,8 @@ export function EmailForm(EmailProps: Partial<FormData>) {
 
   const defaultValues: Partial<FormData> = {
     isSub: EmailProps.isSub,
-    prefHour: EmailProps.prefHour,
+    prefHour: utcToLocalHour(new Date(EmailProps.prefTimestamp!)),
+    prefTimestamp: EmailProps.prefTimestamp,
   };
 
   const form = useForm<FormData>({
@@ -52,8 +54,7 @@ export function EmailForm(EmailProps: Partial<FormData>) {
 
   async function onSubmit(data: FormData) {
     setIsSaving(true);
-
-    const { timestamp, hour } = initialTimeSetter(data.prefHour);
+    const { timestamp, hour } = timeSetter(data.prefHour);
 
     const response = await fetch("/api/updateprefs", {
       method: "PATCH",

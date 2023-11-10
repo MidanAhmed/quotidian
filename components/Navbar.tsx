@@ -1,7 +1,7 @@
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { ModeToggle } from "./ModeToggle";
-import { LoginLink, LogoutLink } from "@kinde-oss/kinde-auth-nextjs/server";
+import { LoginLink } from "@kinde-oss/kinde-auth-nextjs/server";
 import { buttonVariants } from "./ui/button";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
@@ -16,9 +16,12 @@ const Navbar = () => {
           </Link>
           <div className="flex justify-between items-center gap-2">
             {isAuthenticated() ? (
-              <LogoutLink className={buttonVariants({ variant: "outline" })}>
-                Sign Out
-              </LogoutLink>
+              <Link
+                href="/dashboard"
+                className={buttonVariants({ variant: "outline" })}
+              >
+                Dashboard
+              </Link>
             ) : (
               <LoginLink className={buttonVariants()}>Sign In</LoginLink>
             )}
