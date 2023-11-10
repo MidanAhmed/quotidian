@@ -54,7 +54,6 @@ export function EmailForm(EmailProps: Partial<FormData>) {
 
   async function onSubmit(data: FormData) {
     setIsSaving(true);
-    console.log(data);
     const { timestamp, hour } = timeSetter(data.prefHour);
 
     const response = await fetch("/api/updateprefs", {
