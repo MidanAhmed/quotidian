@@ -2,7 +2,7 @@
 
 **Discover daily inspiration with Quotidian**, where you'll receive a fresh and uplifting quote everyday delivered to your email at preferred time.
 
-![hero](app/public/og.jpg)
+![hero](public/og.jpg)
 
 ## Feedback
 
