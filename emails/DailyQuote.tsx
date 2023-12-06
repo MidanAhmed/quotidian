@@ -8,6 +8,7 @@ import {
   Text,
   Hr,
   Heading,
+  Preview,
 } from "@react-email/components";
 
 interface DailyQuoteProps {
@@ -21,6 +22,7 @@ export function DailyQuote(props: DailyQuoteProps) {
   return (
     <Html>
       <Head />
+      <Preview>Here's your quote for the day.</Preview>
       <Body style={main}>
         <Container style={container}>
           <Text>
@@ -39,7 +41,11 @@ export function DailyQuote(props: DailyQuoteProps) {
           </Text>
           <Hr />
           <Text style={footer}>
-            <Link href="" target="_blank" style={{ ...link, color: "#898989" }}>
+            <Link
+              href="https://www.quotidian.cloud"
+              target="_blank"
+              style={{ ...link, color: "#898989" }}
+            >
               quotidian
             </Link>
             , daily quotes
