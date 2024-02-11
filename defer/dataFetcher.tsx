@@ -4,17 +4,23 @@ import axios from "axios";
 import DailyQuote from "@/emails/DailyQuote";
 import { currentUTCHour } from "@/lib/dayjs";
 import { render } from "@react-email/components";
+import https from "https";
 const headers = {
   "Content-Type": "application/json",
   Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
 };
+const axiosAgent = new https.Agent({
+  rejectUnauthorized: false,
+});
 
 const dataFetcher = async () => {
   try {
     const currhour = currentUTCHour();
     console.log(currhour);
 
-    const { data } = await axios.get("https://api.quotable.io/quotes/random");
+    const { data } = await axios.get("https://api.quotable.io/quotes/random", {
+      httpsAgent: axiosAgent,
+    });
 
     const users = await prisma.user.findMany({
       where: {
